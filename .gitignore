@@ -1,4 +1,5 @@
-rainverse_page
+rainverse_page/build
+rainverse_page/node_modules
 static
 templates
 config.py
