@@ -1,12 +1,13 @@
 from flask import Flask
 from flask_cors import CORS
-from modules.apis import apis
-from modules.web_pages import web_pages
+from modules.apis.base_api import apis
+from modules.web_pages.index_page import web_pages
+from config import Config
 
 app = Flask(__name__)
-
 app.register_blueprint(apis, url_prefix='/apis')
 app.register_blueprint(web_pages)
+app.config.from_object(Config)
 CORS(app, supports_credentials=True)
 if __name__ == '__main__':
     print("server start")

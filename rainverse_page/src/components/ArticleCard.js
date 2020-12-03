@@ -1,8 +1,8 @@
 import {Card} from 'antd';
 import React from 'react';
-import './ArticalCard.less';
+import './ArticleCard.less';
 
-class ArticalCard extends React.Component {
+class ArticleCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,4 +25,4 @@ class ArticalCard extends React.Component {
     }
 }
 
-export default ArticalCard;
+export default ArticleCard;

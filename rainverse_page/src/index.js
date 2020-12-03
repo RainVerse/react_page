@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.less';
-import RainLayout from './components/layout'
+import RainLayout from './components/Layout'
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
