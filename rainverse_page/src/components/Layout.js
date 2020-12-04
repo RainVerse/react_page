@@ -5,6 +5,7 @@ import axios from 'axios'
 import QueueAnim from 'rc-queue-anim';
 import ArticleCard from './ArticleCard'
 import LoginWindow from "./LoginWindow";
+import ArticleUpload from "./ArticleUpload";
 
 const {Header, Content, Footer} = Layout;
 
@@ -63,6 +64,7 @@ class RainLayout extends React.Component {
                             }}>
                                 <Divider orientation="left" plain>
                                     本来无一物，何处惹尘埃。
+                                    <ArticleUpload/>
                                 </Divider>
                                 <QueueAnim animConfig={[
                                     {opacity: [1, 0], translateX: [0, 200]},

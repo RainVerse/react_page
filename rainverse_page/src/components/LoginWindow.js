@@ -28,7 +28,6 @@ class LoginWindow extends React.Component {
                 auth: userData.auth,
                 guestName: userData.guestName,
             })
-            console.log(userData)
         }
     }
 

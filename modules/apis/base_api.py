@@ -32,3 +32,25 @@ def login():
 def logout():
     session.pop('username', None)
     return json.dumps({'status': True}, ensure_ascii=False)
+
+
+@apis.route('/uploadArticle', methods=['POST'])
+def upload_article():
+    if not request.form:
+        return json.dumps({'status': False}, ensure_ascii=False)
+    else:
+        username = session.get('username')
+        # print(username)
+        if username != RAINVERSE_CODE:
+            return json.dumps({'status': False}, ensure_ascii=False)
+        title = Markup(request.form['title']).striptags()
+        content = request.form['content']
+        tags = request.form['tags'].split(',')
+        for (i, tag) in enumerate(tags):
+            tags[i] = Markup(tag).striptags()
+        tags = [tag for tag in tags if tag != '' and tag != ',']
+        print(title)
+        print(len(content))
+        print(tags)
+
+        return json.dumps({'status': True}, ensure_ascii=False)
