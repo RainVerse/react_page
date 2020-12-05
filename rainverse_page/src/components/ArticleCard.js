@@ -7,22 +7,29 @@ class ArticleCard extends React.Component {
         super(props);
         this.state = {
             loading: true,
-            title: props.title,
-            content: props.content
         }
     }
 
     componentDidMount = () => {
-
+        this.setState({
+            loading: false
+        })
     }
 
     render() {
         return (
-            <Card title={this.state.title}>
-                <p>{this.state.content}</p>
+            <Card
+                title={this.props.title}
+                loading={this.state.loading}
+                // bodyStyle={{height: 500}}
+            >
+                <div dangerouslySetInnerHTML={{__html: this.props.content}} className='content'/>
+                <p>{this.props.create_time}</p>
+                {this.props.userState.isLogin && <p>logged in</p>}
             </Card>
         );
     }
+
 }
 
 export default ArticleCard;

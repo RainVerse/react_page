@@ -12,23 +12,12 @@ class LoginWindow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLogin: false,
-            auth: 0,
-            guestName: null,
-            avatar: null,
             modalVisible: false,
         }
+        this.setUserState = props.changeUserState
     }
 
     componentDidMount = () => {
-        let userData = store.get('userData')
-        if (userData) {
-            this.setState({
-                isLogin: userData.isLogin,
-                auth: userData.auth,
-                guestName: userData.guestName,
-            })
-        }
     }
 
     showModal = () => {
@@ -50,10 +39,13 @@ class LoginWindow extends React.Component {
                         auth: res.auth,
                         guestName: res.username,
                     })
-                    this.setState({
+                    this.setUserState({
+                        guestName: res.username,
                         isLogin: res.status,
                         auth: res.auth,
-                        guestName: res.username,
+                        avatar: null,
+                    })
+                    this.setState({
                         modalVisible: false
                     })
                     if (res.auth === 1) {
@@ -90,10 +82,11 @@ class LoginWindow extends React.Component {
                 let res = response.data;
                 if (res.status) {
                     store.remove('userData')
-                    this.setState({
+                    this.setUserState({
+                        guestName: null,
                         isLogin: false,
                         auth: null,
-                        guestName: null,
+                        avatar: null,
                     })
                     message.success('登出成功')
                 }
@@ -107,13 +100,13 @@ class LoginWindow extends React.Component {
     render() {
         const logoutInfo = (
             <div style={{textAlign: "center"}}>
-                {this.state.auth === 2 ? null : ('你好,' + this.state.guestName )}
-                {this.state.auth === 2 ? null : <br/>}
+                {this.props.userState.auth === 2 ? null : ('你好,' + this.props.userState.guestName)}
+                {this.props.userState.auth === 2 ? null : <br/>}
                 点击登出
             </div>);
         return (
             <div>
-                {this.state.isLogin ?
+                {this.props.userState.isLogin ?
                     <div>
                         <Tooltip title={logoutInfo}>
                             <Avatar

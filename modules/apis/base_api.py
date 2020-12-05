@@ -2,14 +2,28 @@ from . import apis
 from flask import request, session, Markup
 import json
 from config import RAINVERSE_CODE
+from database.tables import ArticleTable, TagTable, RelationArticleTag, db
+import datetime
 
 
 @apis.route('/get_article_list', methods=['GET'])
 def get_article_list():
-    username = session.get('username')
-    print(username)
-    article_list = [{'content': 'hahahahahaha1'}, {'content': '哈哈哈'}, {'content': 'hahahahahaha3'}]
-    return json.dumps(article_list, ensure_ascii=False)
+    offset = int(request.args.get('offset'))
+    limit = int(request.args.get('limit'))
+    article_list = []
+    all_article = ArticleTable.query.limit(limit).offset(offset).all()
+    for article in all_article:
+        article_list.append({'title': article.title,
+                             'content': article.content,
+                             'article_type': article.article_type,
+                             'create_time': str(article.create_time),
+                             'last_edit_time': str(article.last_edit_time),
+                             'is_private': article.is_private})
+    db.session.close()
+    is_end = False
+    if len(all_article) < limit:
+        is_end = True
+    return json.dumps({'articleList': article_list, 'isEnd': is_end}, ensure_ascii=False)
 
 
 @apis.route('/login', methods=['POST'])
@@ -49,8 +63,19 @@ def upload_article():
         for (i, tag) in enumerate(tags):
             tags[i] = Markup(tag).striptags()
         tags = [tag for tag in tags if tag != '' and tag != ',']
-        print(title)
-        print(len(content))
-        print(tags)
+        new_article = ArticleTable(article_type=0, title=title, content=content, last_edit_time=datetime.datetime.now())
+        db.session.add(new_article)
+        for tag in tags:
+            cur_tag = TagTable.query.filter_by(tag=tag).first()
+            if cur_tag is None:
+                cur_tag = TagTable(tag=tag, article_num=1)
+                db.session.add(cur_tag)
+            else:
+                cur_tag.article_num += 1
+            db.session.flush()
+            relation = RelationArticleTag(article_id=new_article.id, tag_id=cur_tag.id)
+            db.session.add(relation)
+        db.session.commit()
+        db.session.close()
 
         return json.dumps({'status': True}, ensure_ascii=False)
