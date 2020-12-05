@@ -1,4 +1,4 @@
-.idea/*
+.idea/
 rainverse_page/build
 rainverse_page/node_modules
 rainverse_page/.eslintcache
