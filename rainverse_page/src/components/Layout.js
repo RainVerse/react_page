@@ -88,17 +88,7 @@ class RainLayout extends React.Component {
             >
                 <div key={article.title}>
                     <ArticleCard
-                        article_id={article.id}
-                        num={article.num}
-                        title={article.title}
-                        content={article.content}
-                        article_type={article.article_type}
-                        create_time={article.create_time}
-                        last_edit_time={article.last_edit_time}
-                        is_private={article.is_private}
-                        love_mark={article.love_mark}
-                        tags={article.tags}
-                        comments={article.comments}
+                        articleData={article}
                         userState={this.state.userState}
                         changeComment={this.changeComment}
                     />

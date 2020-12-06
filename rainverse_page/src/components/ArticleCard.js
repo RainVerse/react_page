@@ -32,8 +32,8 @@ class ArticleCard extends React.Component {
                     ,
                     <CommentForm
                         userState={this.props.userState}
-                        articleId={this.props.article_id}
-                        articleNum={this.props.num}
+                        articleId={this.props.articleData.id}
+                        articleNum={this.props.articleData.num}
                         commentId={item.id}
                         changeComment={this.props.changeComment}
                         trigger={
@@ -74,20 +74,20 @@ class ArticleCard extends React.Component {
 
                     <Divider orientation="right" plain>
                         <Tooltip
-                            title={'最后编辑于: ' + moment().format(this.props.last_edit_time)}
+                            title={'最后编辑于: ' + moment().format(this.props.articleData.last_edit_time)}
                             placement="topRight"
                         >
                             <div
-                                style={{color: "grey"}}>{moment().format(this.props.create_time)}
+                                style={{color: "grey"}}>{moment().format(this.props.articleData.create_time)}
                             </div>
                         </Tooltip>
                     </Divider>
-                    {this.props.is_private && <p style={{color: "lightgrey", paddingRight: '8%'}}>私有财产</p>}
+                    {this.props.articleData.is_private && <p style={{color: "lightgrey", paddingRight: '8%'}}>私有财产</p>}
                 </div>
-                {this.props.tags.length ?
+                {this.props.articleData.tags.length ?
                     <div>
                         <List
-                            dataSource={this.props.tags}
+                            dataSource={this.props.articleData.tags}
                             renderItem={item => (
                                 <Tag color={colorList[Math.floor(4 * Math.random())]}>{item}</Tag>
                             )}
@@ -101,14 +101,14 @@ class ArticleCard extends React.Component {
             <div>
                 <Divider/>
                 <List
-                    dataSource={this.props.comments}
+                    dataSource={this.props.articleData.comments}
                     renderItem={this.renderComment}
                 />
             </div>
         );
         return (
             <Card
-                title={this.props.title}
+                title={this.props.articleData.title}
                 loading={this.state.loading}
                 // bodyStyle={{height: 500}}
                 actions={[
@@ -117,8 +117,8 @@ class ArticleCard extends React.Component {
                     </Tooltip>,
                     <CommentForm
                         userState={this.props.userState}
-                        articleId={this.props.article_id}
-                        articleNum={this.props.num}
+                        articleId={this.props.articleData.id}
+                        articleNum={this.props.articleData.num}
                         changeComment={this.props.changeComment}
                         trigger={
                             <Tooltip title={'评论'}>
@@ -128,9 +128,9 @@ class ArticleCard extends React.Component {
                     />,
                 ]}
             >
-                <div dangerouslySetInnerHTML={{__html: this.props.content}} className='content'/>
+                <div dangerouslySetInnerHTML={{__html: this.props.articleData.content}} className='content'/>
                 {articleInfo}
-                {this.props.comments.length ? comments : null}
+                {this.props.articleData.comments.length ? comments : null}
             </Card>
         );
     }
