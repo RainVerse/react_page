@@ -4,6 +4,6 @@ from . import web_pages
 
 @web_pages.route('/')
 def index():
-    username = session.get('username')
-    print(username)
+    auth = session.get('auth')
+    print(auth)
     return render_template('index.html')

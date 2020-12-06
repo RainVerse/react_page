@@ -49,6 +49,7 @@ class RainLayout extends React.Component {
                 }
             })
         }
+        axios.defaults.withCredentials = true;
         axios.get('apis/get_article_list', {
             params: {
                 offset: this.state.currentOffset,
@@ -79,12 +80,16 @@ class RainLayout extends React.Component {
             >
                 <div key={article.title}>
                     <ArticleCard
+                        article_id={article.id}
                         title={article.title}
                         content={article.content}
                         article_type={article.article_type}
                         create_time={article.create_time}
                         last_edit_time={article.last_edit_time}
                         is_private={article.is_private}
+                        love_mark={article.love_mark}
+                        tags={article.tags}
+                        comments={article.comments}
                         userState={this.state.userState}
                     />
                     <br/>
@@ -95,6 +100,7 @@ class RainLayout extends React.Component {
 
     loadMoreArticle = (isVisible) => {
         if (isVisible && this.state.data.length) {
+            axios.defaults.withCredentials = true;
             axios.get('apis/get_article_list', {
                 params: {
                     offset: this.state.currentOffset,
