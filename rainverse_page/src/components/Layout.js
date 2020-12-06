@@ -37,6 +37,14 @@ class RainLayout extends React.Component {
         })
     }
 
+    changeComment = (comment, index) => {
+        let newData = this.state.data
+        newData[index]['comments'] = comment
+        this.setState({
+            data: newData
+        })
+    }
+
     componentDidMount = () => {
         let userData = store.get('userData')
         if (userData) {
@@ -81,6 +89,7 @@ class RainLayout extends React.Component {
                 <div key={article.title}>
                     <ArticleCard
                         article_id={article.id}
+                        num={article.num}
                         title={article.title}
                         content={article.content}
                         article_type={article.article_type}
@@ -91,6 +100,7 @@ class RainLayout extends React.Component {
                         tags={article.tags}
                         comments={article.comments}
                         userState={this.state.userState}
+                        changeComment={this.changeComment}
                     />
                     <br/>
                 </div>

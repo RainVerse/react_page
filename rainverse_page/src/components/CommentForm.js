@@ -32,7 +32,7 @@ class CommentForm extends React.Component {
         if (this.props.articleId) {
             values['articleId'] = this.props.articleId
         }
-         if (this.props.commentId) {
+        if (this.props.commentId) {
             values['commentId'] = this.props.commentId
         }
         if (this.props.userState.guestName) {
@@ -50,6 +50,18 @@ class CommentForm extends React.Component {
                 isSuccess = res.status
                 if (isSuccess) {
                     message.success('评论成功');
+                    axios.get('apis/get_article_comment', {
+                        params: {
+                            articleId: this.props.articleId
+                        },
+                        baseURL: 'http://localhost:5000'
+                    })
+                        .then((response) => {
+                            this.props.changeComment(response.data.comments, this.props.articleNum)
+                        })
+                        .catch((error) => {
+                            message.error('连接失败');
+                        });
                 } else {
                     message.error('连接失败');
                 }

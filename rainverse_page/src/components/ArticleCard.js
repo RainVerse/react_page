@@ -13,6 +13,7 @@ class ArticleCard extends React.Component {
         this.state = {
             loading: true,
         }
+
     }
 
     componentDidMount = () => {
@@ -32,7 +33,9 @@ class ArticleCard extends React.Component {
                     <CommentForm
                         userState={this.props.userState}
                         articleId={this.props.article_id}
+                        articleNum={this.props.num}
                         commentId={item.id}
+                        changeComment={this.props.changeComment}
                         trigger={
                             <span key="comment-basic-reply-to">回复</span>
                         }
@@ -115,6 +118,8 @@ class ArticleCard extends React.Component {
                     <CommentForm
                         userState={this.props.userState}
                         articleId={this.props.article_id}
+                        articleNum={this.props.num}
+                        changeComment={this.props.changeComment}
                         trigger={
                             <Tooltip title={'评论'}>
                                 <MessageTwoTone/>
