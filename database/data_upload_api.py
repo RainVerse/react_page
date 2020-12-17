@@ -20,7 +20,7 @@ def upload_article_data(article_type, title, content, tags):
     db.session.close()
 
 
-def upload_common_data(guest_name, article_id, content, comment_id):
+def upload_comment_data(guest_name, article_id, content, comment_id):
     new_comment = CommentTable(guest_name=guest_name, content=content, article_id=article_id, avatar_id=1,
                                father_comment_id=comment_id)
     db.session.add(new_comment)

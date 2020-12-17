@@ -1,7 +1,7 @@
 from . import apis
 from flask import request, session
 import json
-from database.data_download_api import get_article_list_data, get_article_comment_data
+from database.data_download_api import get_article_list_data, get_article_comment_data, get_page_comment_data
 
 
 @apis.route('/get_article_list', methods=['GET'])
@@ -21,3 +21,14 @@ def get_article_comment():
     article_id = int(request.args.get('articleId'))
     comments = get_article_comment_data(article_id)
     return json.dumps({'status': True, 'comments': comments}, ensure_ascii=False)
+
+
+@apis.route('/get_page_comment', methods=['GET'])
+def get_page_comment():
+    offset = int(request.args.get('offset'))
+    limit = int(request.args.get('limit'))
+    comments = get_page_comment_data(offset, limit)
+    is_end = False
+    if len(comments) < limit:
+        is_end = True
+    return json.dumps({'status': True, 'comments': comments, 'isEnd': is_end}, ensure_ascii=False)

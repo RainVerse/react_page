@@ -1,4 +1,4 @@
-import {Col, Layout, Menu, Row, Divider, List} from 'antd';
+import {Col, Layout, Menu, Row, Divider, List, BackTop} from 'antd';
 import {SyncOutlined} from '@ant-design/icons';
 import VisibilitySensor from "react-visibility-sensor";
 import React from 'react';
@@ -9,6 +9,7 @@ import ArticleCard from './ArticleCard'
 import LoginWindow from "./LoginWindow";
 import ArticleUpload from "./ArticleUpload";
 import store from "store";
+import SideComment from "./SideComment";
 
 const {Header, Content, Footer} = Layout;
 const loadNum = 5
@@ -155,6 +156,9 @@ class RainLayout extends React.Component {
                 </Header>
                 <div className='bg'>
                     <Row>
+                        <SideComment
+                            userState={this.state.userState}
+                        />
                         <Col xs={0} sm={1} md={2} lg={6} xl={5}/>
                         <Col xs={24} sm={22} md={20} lg={16} xl={14}>
                             <Content style={{
@@ -178,6 +182,7 @@ class RainLayout extends React.Component {
                         <Col xs={2} sm={3} md={4} lg={5} xl={5}/>
                     </Row>
                     <Footer style={{textAlign: 'center'}}>
+                        <BackTop/>
                         <p>Developed by RainVerse 2021 <a href="mailto:rainverse@qq.com">Contact me</a></p>
                         <a href='https://beian.miit.gov.cn/'>辽ICP备17013470号-2</a>
                     </Footer>

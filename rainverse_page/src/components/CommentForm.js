@@ -5,7 +5,9 @@ import {
     ProFormText
 } from '@ant-design/pro-form';
 import axios from "axios";
+import 'braft-editor/dist/index.css';
 import BraftEditor from "braft-editor";
+import MaxLength from 'braft-extensions/dist/max-length';
 
 class CommentForm extends React.Component {
     formRef = React.createRef();
@@ -28,7 +30,7 @@ class CommentForm extends React.Component {
     };
 
     onFormSubmit = async (values) => {
-        values.content = values.content.toHTML()
+        values.content = values.content.toRAW()
         if (this.props.articleId) {
             values['articleId'] = this.props.articleId
         }
@@ -50,18 +52,35 @@ class CommentForm extends React.Component {
                 isSuccess = res.status
                 if (isSuccess) {
                     message.success('评论成功');
-                    axios.get('apis/get_article_comment', {
-                        params: {
-                            articleId: this.props.articleId
-                        },
-                        baseURL: 'http://localhost:5000'
-                    })
-                        .then((response) => {
-                            this.props.changeComment(response.data.comments, this.props.articleNum)
+                    //发布的是文章评论
+                    if (this.props.articleId) {
+                        axios.get('apis/get_article_comment', {
+                            params: {
+                                articleId: this.props.articleId
+                            },
+                            baseURL: 'http://localhost:5000'
                         })
-                        .catch((error) => {
-                            message.error('连接失败');
-                        });
+                            .then((response) => {
+                                this.props.changeComment(response.data.comments, this.props.articleNum)
+                            })
+                            .catch((error) => {
+                                message.error('连接失败');
+                            });
+                    } else {//发布的是留言
+                        // axios.get('apis/get_article_comment', {
+                        //     params: {
+                        //         articleId: this.props.articleId
+                        //     },
+                        //     baseURL: 'http://localhost:5000'
+                        // })
+                        //     .then((response) => {
+                        //         this.props.changeComment(response.data.comments, this.props.articleNum)
+                        //     })
+                        //     .catch((error) => {
+                        //         message.error('连接失败');
+                        //     });
+                    }
+
                 } else {
                     message.error('连接失败');
                 }
@@ -76,7 +95,7 @@ class CommentForm extends React.Component {
     render() {
         const controls = ['bold', 'italic', 'underline', 'text-color', 'separator',
             'strike-through', 'code', 'text-align', 'emoji', 'link', 'separator']
-
+        BraftEditor.use(MaxLength())
         return (
             <ModalForm
                 formRef={this.formRef}
@@ -102,7 +121,7 @@ class CommentForm extends React.Component {
                         validateTrigger: 'onBlur'
                     }]}>
                     <BraftEditor
-
+                        maxLength={128}
                         value={this.state.editorState}
                         onChange={this.handleContentChange}
                         controls={controls}

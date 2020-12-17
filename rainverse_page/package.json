@@ -12,6 +12,7 @@
     "antd": "^4.9.1",
     "axios": "^0.21.0",
     "braft-editor": "^2.3.9",
+    "braft-extensions": "^0.1.1",
     "craco-less": "^1.17.1",
     "moment": "^2.29.1",
     "rc-queue-anim": "^1.8.5",

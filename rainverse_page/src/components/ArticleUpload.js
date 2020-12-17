@@ -24,7 +24,7 @@ class ArticleUpload extends React.Component {
     }
 
     onFormSubmit = async (values) => {
-        values.content = values.content.toHTML()
+        values.content = values.content.toRAW()
         values.tags = this.tagRef.current.state.tags
         let formData = new URLSearchParams(values)
         let isSuccess = false

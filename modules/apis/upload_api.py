@@ -1,7 +1,7 @@
 from . import apis
 from flask import request, session, Markup
 import json
-from database.data_upload_api import upload_article_data, upload_common_data
+from database.data_upload_api import upload_article_data, upload_comment_data
 
 
 @apis.route('/uploadArticle', methods=['POST'])
@@ -13,7 +13,7 @@ def upload_article():
         if int(auth) != 2:
             return json.dumps({'status': False}, ensure_ascii=False)
         title = Markup(request.form['title']).striptags()
-        content = request.form['content']
+        content = Markup(request.form['content']).striptags()
         tags = request.form['tags'].split(',')
         for (i, tag) in enumerate(tags):
             tags[i] = Markup(tag).striptags()
@@ -34,7 +34,7 @@ def upload_comment():
         guest_name = Markup(request.form['guestName']).striptags()
         if int(auth) == 2:
             guest_name = 'RainVerse'
-        content = request.form['content']
+        content = Markup(request.form['content']).striptags()
         if 'articleId' in request.form.keys():
             article_id = request.form['articleId']
         else:
@@ -43,5 +43,5 @@ def upload_comment():
             comment_id = request.form['commentId']
         else:
             comment_id = None
-        upload_common_data(guest_name, article_id, content, comment_id)
+        upload_comment_data(guest_name, article_id, content, comment_id)
         return json.dumps({'status': True}, ensure_ascii=False)

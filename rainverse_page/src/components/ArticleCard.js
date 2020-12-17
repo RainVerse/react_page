@@ -4,6 +4,7 @@ import moment from 'moment';
 import React from 'react';
 import './ArticleCard.less';
 import CommentForm from "./CommentForm";
+import BraftEditor from 'braft-editor'
 
 const colorList = ['purple', 'cyan', 'geekblue', 'blue']
 
@@ -49,7 +50,7 @@ class ArticleCard extends React.Component {
                     />
                 }
                 content={
-                    <div dangerouslySetInnerHTML={{__html: item.content}} className='content'/>
+                    <div dangerouslySetInnerHTML={{__html: this.contentToHTML(item.content)}} className='content'/>
                 }
                 datetime={
                     <Tooltip title={moment().format(item.create_time)}>
@@ -65,6 +66,9 @@ class ArticleCard extends React.Component {
                     : null}
             </Comment>
         );
+    }
+    contentToHTML = (raw) => {
+        return BraftEditor.createEditorState(raw).toHTML()
     }
 
     render() {
@@ -99,7 +103,7 @@ class ArticleCard extends React.Component {
         );
         const comments = (
             <div>
-                <Divider/>
+                <Divider orientation="left">评论</Divider>
                 <List
                     dataSource={this.props.articleData.comments}
                     renderItem={this.renderComment}
@@ -128,7 +132,8 @@ class ArticleCard extends React.Component {
                     />,
                 ]}
             >
-                <div dangerouslySetInnerHTML={{__html: this.props.articleData.content}} className='content'/>
+                <div dangerouslySetInnerHTML={{__html: this.contentToHTML(this.props.articleData.content)}}
+                     className='content'/>
                 {articleInfo}
                 {this.props.articleData.comments.length ? comments : null}
             </Card>

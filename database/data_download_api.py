@@ -63,3 +63,19 @@ def get_article_comment_data(article_id):
             final_comments.append(v)
     db.session.close()
     return final_comments
+
+
+def get_page_comment_data(offset, limit):
+    comments = []
+    comments_data = CommentTable.query.filter_by(article_id=None).limit(limit).offset(offset).all()
+    for comment in comments_data:
+        comments.append({'id': comment.id,
+                         'avatar': comment.avatar.src,
+                         'guestName': comment.guest_name,
+                         'content': comment.content,
+                         'create_time': str(comment.create_time),
+                         'love_mark': comment.love_mark,
+                         })
+
+    db.session.close()
+    return comments
